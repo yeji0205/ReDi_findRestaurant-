@@ -28,7 +28,6 @@ async function getRestaurant() {
     let popUp = marker.bindPopup(venue.name).openPopup();
   }
 }
-getRestaurant();
 
 // Reverse geocode the location, output the address
 async function onClick(e) {
