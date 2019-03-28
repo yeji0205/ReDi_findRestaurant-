@@ -40,4 +40,29 @@ async function onClick(e) {
   popup.setLatLng(e.latlng).setContent(label).openOn(mymap);
 }
 
+async function getIsoLine() {
+    let url =
+        "https://isoline.route.api.here.com/routing/7.2/calculateisoline.json?mode=fastest%3Bpedestrian&start=52.510730%2C13.372075&rangetype=time&range=900&app_id=fQbm3OvKtn44q7f7wqu0&app_code=wBdfzzXp6j6sEYkp-pqP4g";
+    let response = await fetch(url);
+    let reply = await response.json();
+    console.log(reply);
+
+    let isoline = reply.response.isoline[0].component[0].shape;
+    return isoline;
+}
+
+// render Polygon
+async function renderPolygon(){
+    let isoline = await getIsoLine();
+
+    let coordinates = [];   
+    for(let coordinate of isoline){
+        coordinates.push(coordinate.split(","));
+    }
+
+    let polygon = L.polygon(coordinates);
+    polygon.addTo(mymap);
+}
+renderPolygon()
+
 mymap.on('click', onClick);
